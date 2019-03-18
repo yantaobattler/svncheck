@@ -19,5 +19,7 @@ from app_user import views as app_user_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('svn/', app_user_views.door),
+    path('svn/', app_user_views.index),
+    path('mainblank/', app_user_views.mainblank),
+    path('', app_user_views.login),
 ]
