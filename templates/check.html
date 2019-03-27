@@ -1,10 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+    <link rel="stylesheet" href="../static/css/global.css">
+  <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
 
+
+    <div class="site-text">
+
+        <h1 class="site-h1">
+            <div class="layui-col-md-offset1">
+                上传源码清单
+            </div>
+        </h1>
+
+        <div class="site-text site-block" >
+            <div class="layui-row">
+                <div class="layui-col-md4 layui-col-md-offset1">
+                    <div class="layui-upload-drag" id="btn_up">
+                      <i class="layui-icon layui-icon-upload"></i>
+                      <p>点击上传，或将文件拖拽到此处</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h1 class="site-h1">
+            <div class="layui-col-md-offset1">
+                清单检查
+            </div>
+        </h1>
+        <form class="layui-form" method="post">
+            <div class="layui-form-item">
+              <label class="layui-form-label">子需求编号</label>
+              <div class="layui-input-inline">
+                  <input type="text" name="sub_number" required lay-verify="required"
+                   placeholder="请输入子需求编号" autocomplete="off" class="layui-input">
+              </div>
+                <button class="layui-btn" lay-submit  lay-filter="formDemo">立即提交</button>
+            </div>
+          </form>
+    </div>
+
+
+<script src="../static/layui/layui.js"></script>
+<script>
+//JavaScript代码区域
+layui.use(['element','layer','form', 'upload'], function(){
+  var upload = layui.upload,
+  layer = layui.layer,
+  form = layui.form,
+  $ = layui.jquery;
+
+    //允许上传的文件后缀
+     var uploadInst = upload.render({
+        elem: '#btn_up'
+        ,url: '/upload/'
+        ,accept: 'file' //普通文件
+        ,exts: 'xlsx|xlsx|xlsx' //只允许指定文件
+        ,done: function(res, index, upload){
+            layer.msg(res.rsp_msg);
+        }
+     });
+
+     form.on('submit(formDemo)', function(data){
+      if (checkflag == 1){
+          $.ajax({
+                 type: 'POST',
+                 url: '/chgpwd_action/',
+                 data: JSON.stringify(data),
+                contentType: 'application/json; charset=UTF-8',
+                dataType: 'json',
+            success: function(data) {
+                layer.msg(data.rsp_msg);
+                //刷新父页面（整个页面）
+                //window.location.reload()只刷新iframe里的
+                parent.location.reload();
+            },
+            error: function(xhr, type) {
+                layer.msg(data.rsp_msg);
+            }
+          });
+      }
+
+});
+</script>
 </body>
 </html>

@@ -16,10 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from app_user import views as app_user_views
+from app_svn import views as app_svn_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', app_user_views.login),
     path('svn/', app_user_views.index),
     path('mainblank/', app_user_views.mainblank),
-    path('', app_user_views.login),
+    path('chg_pwd/', app_user_views.chg_pwd),
+    path('chgpwd_action/', app_user_views.chgpwd_action),
+
+    path('upload/', app_svn_views.upload),
+    path('check/', app_svn_views.check),
+    path('settag/', app_svn_views.settag),
+    path('check_count/', app_svn_views.check_count),
+
 ]

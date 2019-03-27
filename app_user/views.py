@@ -1,6 +1,9 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 from django.shortcuts import HttpResponse
 from app_user import *
+from app_svn import *
+
 # Create your views here.
 
 usr_list = [
@@ -10,6 +13,7 @@ usr_list = [
 
 
 def login(request):
+    request.session.delete(request.session.session_key)
     if request.method == 'POST':
         account = request.POST.get('account', None)
         password = request.POST.get('password', None)
@@ -26,6 +30,7 @@ def login(request):
     if account and password:
         checkresult = logincheck.check(account, password, ip)
         if checkresult.get('code') == '00':  # 正常
+            request.session["username"] = account
             return render(request, 'index.html', {'data': checkresult.get('result')})
         elif checkresult.get('code') == '01':  # 用户名不存在
             msg = '用户名不存在'
@@ -39,18 +44,16 @@ def login(request):
 def mainblank(request):
     return render(request, 'mainblank.html')
 
+
 def index(request):
     return render(request, 'index.html')
 
 
-def main(request):
-    print('cmdb')
-    # return HttpResponse('hello world!')
-    # 必须大写POST
-    if request.method == 'POST':
-        username = request.POST.get('username', None)
-        password = request.POST.get('password', None)
-        print(username, password)
-        tmp = {'user': username, 'pwd': password}
-        usr_list.append(tmp)
-    return render(request, 'index.html', {'data':usr_list})
+def chg_pwd(request):
+    return render(request, 'change_pwd.html')
+
+
+def chgpwd_action(request):
+    rsp_msg = chgpwd.change(request)
+    return JsonResponse({'rsp_msg': rsp_msg})
+

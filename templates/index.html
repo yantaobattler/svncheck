@@ -33,7 +33,7 @@
             你好，{{ data.name }} ！
         </a>
         <dl class="layui-nav-child">
-            <dd><a href="">修改密码</a></dd>
+            <dd><a href="/chg_pwd/" target="main-iframe-name">修改密码</a></dd>
             <!--
             <dd><a href="">安全设置</a></dd>
             -->
@@ -50,19 +50,18 @@
         <li class="layui-nav-item layui-nav-itemed">
           <a class="" href="javascript:;">源码清单</a>
           <dl class="layui-nav-child">
-            <dd><a href="javascript:;">源码清单检查</a></dd>
-            <dd><a href="javascript:;">SVN打标签</a></dd>
+            <dd><a href="/check/" target="main-iframe-name">源码清单检查</a></dd>
+            <dd><a href="/settag/" target="main-iframe-name">SVN打标签</a></dd>
           </dl>
         </li>
         <li class="layui-nav-item">
           <a href="javascript:;">报表查询</a>
           <dl class="layui-nav-child">
-            <dd><a href="javascript:;">源码检查统计</a></dd>
+            <dd><a href="/check_count/" target="main-iframe-name">源码检查统计</a></dd>
           </dl>
         </li>
           <!--
            <li class="layui-nav-item"><a href="door.html" target="main-iframe-name">name</a></li>
-           <li class="layui-nav-item"><a href="door.html" target="main-iframe-id">id</a></li>
            -->
       </ul>
     </div>
@@ -71,7 +70,7 @@
   <div class="layui-body">
     <!-- 内容主体区域 -->
 
-        <iframe id="main-iframe-id" name="main-iframe-name" src="mainblank/" style="overflow: visible;" frameborder="no" width="100%" height="100%"></iframe>
+        <iframe id="main-iframe-id" name="main-iframe-name" src="/mainblank/" style="overflow: visible;" frameborder="no" width="100%" height="100%"></iframe>
 
   </div>
 
@@ -92,8 +91,12 @@
 <script src="/static/layui/layui.js"></script>
 <script>
 //JavaScript代码区域
-layui.use('element', function(){
-  var element = layui.element;
+layui.use(['element','layer','form'], function(){
+  var element = layui.element,
+  layer = layui.layer,
+  form = layui.form;
+
+
 
 });
 </script>
