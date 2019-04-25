@@ -27,7 +27,11 @@ urlpatterns = [
     path('chgpwd_action/', app_user_views.chgpwd_action),
 
     path('upload/', app_svn_views.upload),
-    path('check/', app_svn_views.check),
+    path('upload_page/', app_svn_views.upload_page),
+    path('check_action/', app_svn_views.check_action),
+    path('check_page/', app_svn_views.check_page),
+    path('check_page/result_page/', app_svn_views.check_result_page),
+    path('check_page/result_action/', app_svn_views.check_result_action),
     path('settag/', app_svn_views.settag),
     path('check_count/', app_svn_views.check_count),
 

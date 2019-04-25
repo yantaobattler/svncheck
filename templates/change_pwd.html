@@ -148,6 +148,7 @@ layui.use(['layer', 'form'], function(){
                 contentType: 'application/json; charset=UTF-8',
                 dataType: 'json',
             success: function(data) {
+                     console.log(data);
                 layer.msg(data.rsp_msg);
                 //刷新父页面（整个页面）
                 //window.location.reload()只刷新iframe里的
