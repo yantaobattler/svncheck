@@ -33,6 +33,7 @@ urlpatterns = [
     path('check_page/result_page/', app_svn_views.check_result_page),
     path('check_page/result_action/', app_svn_views.check_result_action),
     path('settag/', app_svn_views.settag),
-    path('check_count/', app_svn_views.check_count),
+    path('check_count/', app_svn_views.check_count_page),
+    path('check_count_action/', app_svn_views.check_count_action),
 
 ]

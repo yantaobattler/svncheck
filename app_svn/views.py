@@ -1,4 +1,5 @@
 from app_svn.models import check_main
+from app_user.models import useraccount
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.shortcuts import HttpResponse
@@ -8,6 +9,7 @@ import datetime
 import json
 from app_svn import checklist
 from app_svn import getcheckresult
+from app_svn import getcheckcountresult
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -19,8 +21,11 @@ def upload_page(request):
 
 
 def check_page(request):
-    check_no = request.session['check_no']
-    excel_name = check_main.objects.get(check_no=check_no).excel_name
+    check_no = request.session.get('check_no', '')
+    if check_no:
+        excel_name = check_main.objects.get(check_no=check_no).excel_name
+    else:
+        excel_name = ''
     return render(request, 'check.html', {'check_no': check_no, 'excel_name': excel_name})
 
 
@@ -43,8 +48,24 @@ def settag(request):
     return render(request, 'settag.html')
 
 
-def check_count(request):
-    return render(request, 'check_count.html')
+def check_count_page(request):
+    print('check_count_page')
+    user_list = []
+    user_names = useraccount.objects.all().values_list('name')
+    for name in user_names:
+        user_list.append(name[0])  # [0]is str, without [0] is tuple
+    return render(request, 'check_count.html', {'user_list': user_list})
+
+
+def check_count_action(request):
+    print('check_count_action')
+    UD_no = request.POST.get('UD_no')
+    name = request.POST.get('name')
+    startdate = request.POST.get('startdate')
+    enddate = request.POST.get('enddate')
+    rsp_dict = getcheckcountresult.getresult(UD_no, name, startdate, enddate)
+    message_json = json.dumps(rsp_dict)
+    return HttpResponse(message_json)
 
 
 def upload(request):

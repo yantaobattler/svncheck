@@ -5,7 +5,7 @@ from app_svn import tools
 def getresult(check_no):
     rsp_dict = {"code": 0, "msg": ""}
     query = check_detail.objects.filter(check_no=check_no).order_by('id')
-    rsp_dict['count'] = len(query)
+    rsp_dict['count'] = query.count()
     data_list = []
     if rsp_dict['count'] == 0:
         data = {}
