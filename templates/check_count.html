@@ -44,20 +44,14 @@
                   <input type="text" class="layui-input" id="enddate" required lay-verify="required">
                 </div>
             </div>
-
             <div class="layui-form-item layui-input-inline">
-                <button class="layui-btn" id="querybtn">查询</button>
+                <button  type="button" class="layui-btn" id="querybtn">查询</button>
             </div>
         </form>
 
         <table id="demo" lay-filter="test"></table>
 
     </div>
-
-
-
-
-
 <script src="../static/layui/layui.js"></script>
 <script>
 //JavaScript代码区域
@@ -97,10 +91,13 @@ layui.use(['element','layer','form', 'upload', 'laydate', 'table'], function() {
         ,url: '/check_count_action/' //数据接口
         ,page: false //关闭分页
         ,cols: [[ //表头
-          {field: 'check_no', title: '流水号', width:200, sort: true, fixed: 'left'}
-          ,{field: 'excel_line', title: '行数', width:100, sort: true, fixed: 'left'}
-          ,{field: 'line_name', title: '问题行程序名', width:300, sort: true, fixed: 'left'}
-          ,{field: 'problem', title: '问题', width:300, sort: true, fixed: 'left'}
+          {field: 'check_no', title: '流水号', width:100, sort: true, fixed: 'left'}
+          ,{field: 'UD_FD_code', title: '投产编号', width:100, sort: true, fixed: 'left'}
+          ,{field: 'sub_req_code', title: '子需求编号', width:120, sort: true, fixed: 'left'}
+          ,{field: 'sub_req_name', title: '子需求名', width:275, sort: true, fixed: 'left'}
+          ,{field: 'upload_user', title: '提交用户', width:100, sort: true, fixed: 'left'}
+          ,{field: 'problem_count', title: '问题数', width:100, sort: true, fixed: 'left'}
+          ,{field: 'upload_time', title: '提交日期', width:100, sort: true, fixed: 'left'}
             ]]
         });
 
