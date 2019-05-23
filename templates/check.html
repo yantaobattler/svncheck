@@ -88,13 +88,17 @@ layui.use(['element','layer','form', 'upload'], function() {
             beforeSend:function(){
                 console.log('beforeSend');
                 layer.msg('正在检查，请稍后...');
+                var indexs = layer.load(2);
             },
             success: function() {
                 console.log('success');
                 window.location.href="result_page/";
+                layer.close(indexs);
             },
             error: function() {
                 console.log('error');
+                layer.msg('异常错误！请检查文件');
+                layer.close(indexs);
             }
         });
         return false;

@@ -1,10 +1,18 @@
 from app_user.models import useraccount
 import datetime
+import hashlib
 
 
 # 加密
 def encodepwd(password):
-    return password
+    # 创建md5对象
+    hl = hashlib.md5()
+
+    # 此处必须声明encode
+    # 若写法为hl.update(str)  报错为： Unicode-objects must be encoded before hashing
+    hl.update(password.encode(encoding='utf-8'))
+
+    return hl.hexdigest()
 
 
 # 解密
@@ -35,4 +43,4 @@ def check(account, password, ip):
 
 
 if __name__=='__main__':
-    print(datetime.datetime.now())
+    print(encodepwd('1'))

@@ -25,7 +25,7 @@
                 <label class="layui-form-label">用户</label>
                     <div class="layui-input-inline">
                       <select name="name" lay-verify="required" id="name">
-                        <option value="all" selected>全部</option>
+                        <option value="" selected>全部</option>
                           {% for i in user_list %}
                               <option value="{{ i }}">{{ i }}</option>
                           {% endfor %}
@@ -35,17 +35,17 @@
             <div class="layui-form-item layui-col-md-offset1 layui-input-inline">
                 <label class="layui-form-label">开始日期</label>
                 <div class="layui-input-inline">
-                  <input type="text" class="layui-input" id="startdate" required lay-verify="required">
+                  <input type="text" class="layui-input" id="startdate">
                 </div>
             </div>
             <div class="layui-form-item layui-input-inline">
                 <label class="layui-form-label">结束日期</label>
                 <div class="layui-input-inline">
-                  <input type="text" class="layui-input" id="enddate" required lay-verify="required">
+                  <input type="text" class="layui-input" id="enddate">
                 </div>
             </div>
             <div class="layui-form-item layui-input-inline">
-                <button  type="button" class="layui-btn" id="querybtn">查询</button>
+                <button type="button" class="layui-btn" id="querybtn">查询</button>
             </div>
         </form>
 
@@ -66,9 +66,11 @@ layui.use(['element','layer','form', 'upload', 'laydate', 'table'], function() {
       //执行一个laydate实例
       laydate.render({
         elem: '#startdate' //指定元素
+          ,value: new Date()
       });
       laydate.render({
         elem: '#enddate' //指定元素
+          ,value: new Date()
       });
 
     //按钮事件监听
@@ -77,6 +79,14 @@ layui.use(['element','layer','form', 'upload', 'laydate', 'table'], function() {
         var name = document.getElementById('name');
         var startdate = document.getElementById('startdate');
         var enddate = document.getElementById('enddate');
+        if (!startdate.value) {
+            layer.msg('请输入开始日期');
+            return false;
+        }
+        if (!enddate.value) {
+            layer.msg('请输入结束日期');
+            return false;
+        }
 
         table.render({
           elem: '#demo',
@@ -87,20 +97,28 @@ layui.use(['element','layer','form', 'upload', 'laydate', 'table'], function() {
               enddate: enddate.value
             },
             method: 'post',
-        height: 'full-20'
+        height: 300
         ,url: '/check_count_action/' //数据接口
         ,page: false //关闭分页
         ,cols: [[ //表头
           {field: 'check_no', title: '流水号', width:100, sort: true, fixed: 'left'}
           ,{field: 'UD_FD_code', title: '投产编号', width:100, sort: true, fixed: 'left'}
-          ,{field: 'sub_req_code', title: '子需求编号', width:120, sort: true, fixed: 'left'}
-          ,{field: 'sub_req_name', title: '子需求名', width:275, sort: true, fixed: 'left'}
+          ,{field: 'sub_req_code', title: '子需求编号', width:110, sort: true, fixed: 'left'}
+          ,{field: 'sub_req_name', title: '子需求名', width:260, sort: true, fixed: 'left'}
           ,{field: 'upload_user', title: '提交用户', width:100, sort: true, fixed: 'left'}
           ,{field: 'problem_count', title: '问题数', width:100, sort: true, fixed: 'left'}
           ,{field: 'upload_time', title: '提交日期', width:100, sort: true, fixed: 'left'}
             ]]
         });
 
+    });
+    //监听行双击事件
+    table.on('rowDouble(test)', function(obj){
+        console.log(obj.data.check_no);
+        var url = '/check_count_detail/?check_no=';
+        url += obj.data.check_no;
+        console.log(url);
+        window.open(url);
     });
 
 

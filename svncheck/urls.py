@@ -32,8 +32,10 @@ urlpatterns = [
     path('check_page/', app_svn_views.check_page),
     path('check_page/result_page/', app_svn_views.check_result_page),
     path('check_page/result_action/', app_svn_views.check_result_action),
-    path('settag/', app_svn_views.settag),
+    path('settag_page/', app_svn_views.settag_page),
+    path('settag_action/', app_svn_views.settag_action),
     path('check_count/', app_svn_views.check_count_page),
     path('check_count_action/', app_svn_views.check_count_action),
+    path('check_count_detail/', app_svn_views.check_count_detail),
 
 ]

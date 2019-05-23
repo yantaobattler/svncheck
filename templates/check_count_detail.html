@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>check_count_detail</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+</head>
+<body>
+<table lay-filter="demo">
+    <thead>
+    <tr>
+        <th lay-data="{field:'check_no', width:200, sort: true, fixed: 'left'}">流水号</th>
+        <th lay-data="{field:'excel_line', width:100, sort: true, fixed: 'left'}">行数</th>
+        <th lay-data="{field:'line_name', width:300, sort: true, fixed: 'left'}">问题行程序名</th>
+        <th lay-data="{field:'problem', width:300, sort: true, fixed: 'left'}">问题</th>
+    </tr>
+    </thead>
+  <tbody>
+    {% for i in data %}
+        <tr>
+            <td>{{ i.check_no }}</td>
+            <td>{{ i.excel_line }}</td>
+            <td>{{ i.line_name }}</td>
+            <td>{{ i.problem }}</td>
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
+<script src="../static/layui/layui.js"></script>
+<script>
+//JavaScript代码区域
+layui.use(['table'], function() {
+    var table  = layui.table;
+
+    //转换静态表格
+    table.init('demo', {
+      height: 'full-20' //设置高度
+      ,page: false //关闭分页
+        ,limit: 100000
+     });
+});
+</script>
+</body>
+</html>

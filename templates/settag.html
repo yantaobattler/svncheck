@@ -1,10 +1,146 @@
 <!DOCTYPE html>
-<html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+     <meta charset="utf-8">
+    <title>settag</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+    <link rel="stylesheet" href="../static/css/global.css">
 </head>
 <body>
-settag
+    <div class="site-content" >
+        <h1 class="site-h1">
+            打标签
+        </h1>
+        <form class="layui-form" method="POST">
+
+            <div class="layui-form-item layui-col-md-offset1">
+                <label class="layui-form-label">系统简称</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="sys_name" required lay-verify="required"
+                   placeholder="PRO目录名,如ATM_PRO" autocomplete="off" class="layui-input"
+                  id="sys_name_id">
+                </div>
+                <label class="layui-form-label">SVN版本号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="svn_version" required lay-verify="required"
+                   placeholder="源码清单中最高的版本号" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-col-md-offset1">
+                <label class="layui-form-label">系统版本号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="v_version" required lay-verify="required"
+                   placeholder="如V1.0.0_190101" autocomplete="off" class="layui-input"
+                  id = "v_version_id">
+                </div>
+                <label class="layui-form-label">投产编号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="UD_FD_code" required lay-verify="required"
+                   placeholder="UD/FD开头的内部投产编号" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-col-md-offset1">
+                <label class="layui-form-label">标签源目录</label>
+                <div class="layui-input-block">
+                  <input type="text" name="trunk_url" required lay-verify="required"
+                   placeholder="标签源目录" autocomplete="off" class="layui-input"
+                  id = "trunk_url_id">
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-col-md-offset1">
+                <label class="layui-form-label">目标目录</label>
+                <div class="layui-input-block">
+                  <input type="text" name="tag_url" required lay-verify="required"
+                   placeholder="标签目标目录" autocomplete="off" class="layui-input"
+                  id = "tag_url_id">
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-col-md-offset1">
+                <label class="layui-form-label">子需求编号</label>
+                <div class="layui-input-block">
+                  <input type="text" name="sub_req_code" required lay-verify="required"
+                   placeholder="请输入子需求编号" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-md-offset1">
+                <label class="layui-form-label">子需求名</label>
+                <div class="layui-input-block">
+                  <input type="text" name="sub_req_name" required lay-verify="required"
+                   placeholder="请输入子需求名称" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-col-md-offset1">
+                <button class="layui-btn" lay-submit  lay-filter="formDemo">打标签</button>
+            </div>
+
+        </form>
+    </div>
+
+
+
+<script src="../static/layui/layui.js"></script>
+<script>
+//JavaScript代码区域
+layui.use(['element','layer','form', 'upload'], function() {
+    var upload = layui.upload,
+        layer = layui.layer,
+        form = layui.form,
+        element = layui.elem;
+        $ = layui.jquery;
+
+    $("#sys_name_id").on('blur', function(){
+        var head = "https://10.16.80.52:8443/svn/";
+        var _this = $(this).val();
+        var _v_version = $("#v_version_id").val();
+        var val1 = head + _this +"/trunk";
+        var val2 = head + _this +"/tags/"+_v_version;
+        $("#tag_url_id").val(val2);
+        $("#trunk_url_id").val(val1);
+        });
+
+    $("#v_version_id").on('blur', function(){
+        var head = "https://10.16.80.52:8443/svn/";
+        var _v_version = $(this).val();
+        var _sys_name_id = $("#sys_name_id").val();
+        var val =  head + _sys_name_id +"/tags/"+_v_version;
+        $("#tag_url_id").val(val);
+        });
+
+
+    form.on('submit(formDemo)', function (data) {
+        $.ajax({
+            type: 'POST',
+            url: '/settag_action/',
+            data: JSON.stringify(data),
+            contentType: 'application/json; charset=UTF-8',
+            dataType: 'json',
+            beforeSend:function(){
+                console.log('beforeSend');
+                console.log(data);
+                layer.msg('正在处理，请稍后...');
+                layer.load(2);
+            },
+            success: function(res) {
+                console.log('success');
+                layer.msg(res.rsp_msg);
+                layer.close(layer.load(2));
+            },
+            error: function() {
+                console.log('error');
+                layer.msg('异常错误！请检查');
+                layer.close(layer.load(2));
+            }
+        });
+        return false;
+    });
+});
+</script>
 </body>
 </html>

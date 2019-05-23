@@ -10,6 +10,7 @@ import json
 from app_svn import checklist
 from app_svn import getcheckresult
 from app_svn import getcheckcountresult
+from app_svn import settag
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -44,8 +45,20 @@ def check_action(request):
     checklist.docheck(request)
     return JsonResponse({'rsp_msg': '1'})
 
-def settag(request):
+
+def settag_page(request):
     return render(request, 'settag.html')
+
+
+def settag_action(request):
+    # layui的form提交是json需要这么拿数据
+    data = json.loads(request.body.decode('utf-8'))
+    req_dict = data.get('field')
+    req_dict['user'] = request.session['username']
+    # print(req_dict)
+
+    msg = settag.settag_action(req_dict)
+    return JsonResponse({'rsp_msg': msg})
 
 
 def check_count_page(request):
@@ -58,14 +71,21 @@ def check_count_page(request):
 
 
 def check_count_action(request):
-    print('check_count_action')
+
     UD_no = request.POST.get('UD_no')
     name = request.POST.get('name')
     startdate = request.POST.get('startdate')
     enddate = request.POST.get('enddate')
     rsp_dict = getcheckcountresult.getresult(UD_no, name, startdate, enddate)
-    message_json = json.dumps(rsp_dict)
-    return HttpResponse(message_json)
+    return JsonResponse(rsp_dict)
+
+
+def check_count_detail(request):
+    print('check_count_detail')
+    check_no = request.GET.get('check_no')
+    data_list = getcheckresult.getresult(check_no)
+    print(data_list)
+    return render(request, 'check_count_detail.html', data_list)
 
 
 def upload(request):
