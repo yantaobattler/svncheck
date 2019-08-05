@@ -78,8 +78,17 @@ WSGI_APPLICATION = 'svncheck.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # sqlite
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
+        # mysql
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'svncheck',
+        'USER': 'mysql',
+        'PASSWORD': 'mysql',
+        'HOST': '10.16.34.145',
+        'PORT': '3306',
     }
 }
 
@@ -132,3 +141,56 @@ STATICFILES_DIRS = (
 SESSION_COOKIE_AGE = 60 * 30  # 30分钟
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # 关闭浏览器，则COOKIE失效
+
+
+# log
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        }, # 针对 DEBUG = True 的情况
+    },
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s==========%(levelname)s==========%(pathname)s %(lineno)d: %(message)s'
+        },
+        # INFO 2016-09-03 16:25:20,067 /home/ubuntu/mysite/views.py  get 29: some info...
+    },
+    'handlers': { # 定义输出形式
+        'mail_admins': { # mail
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+             'formatter':'standard'
+        },
+        'file_handler': { # 用于文件输出
+             'level': 'ERROR',
+             'class': 'logging.handlers.TimedRotatingFileHandler',
+             'filename': 'D:\workspace\log\django.log',
+             # 'filename': '/home/yant/log/django.log',
+             'formatter':'standard'
+        },
+        'console':{
+            'level': 'INFO',
+            'filters': ['require_debug_true'], # 上面的filter
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers' : [
+                'file_handler',
+                # 'console'
+            ],
+            'level': 'INFO',
+            'propagate': True # 是否继承父类的log信息
+        }, # handlers 来自于上面的 handlers 定义的内容
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    }
+}

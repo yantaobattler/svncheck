@@ -6,7 +6,10 @@
 import subprocess
 import svn.remote
 from app_svn.models import tag_log
+import logging
 
+
+logger = logging.getLogger("django")
 
 def settag_action(req_list):
     # 先看V存不存在
@@ -17,7 +20,7 @@ def settag_action(req_list):
         return msg
     except:
         pass
-
+    logger.error('11111')
     # 再tag
     cmd = 'svn copy '
     cmd += req_list['trunk_url'] + ' '
@@ -30,14 +33,22 @@ def settag_action(req_list):
     msg += 'svn:' + req_list['svn_version'] + '"'
 
     cmd += '-m ' + msg
+    logger.error('222222')
+    logger.error(cmd)
 
     try:
+        logger.error('try')
         server_info = subprocess.check_output(cmd)
+        logger.error(server_info)
         msg = server_info.decode()
+        logger.error(msg)
         tag_log1(req_list, 'S', msg)
-    except:
+        logger.error('tryend')
+    except Exception as e:
+        logger.error('ex-begin')
         msg = '复制失败！请检查目录是否存在'
         tag_log1(req_list, 'R', msg)
+        logger.error(e)
 
     return msg
 

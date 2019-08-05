@@ -35,13 +35,14 @@ import svn.remote
 import svn.local
 from app_svn import tools
 from app_svn.models import check_detail
+import logging
 
 authorpath = ''
 write_file = ''
 action = ''
 result = ''
 checking_temp = []
-
+logger = logging.getLogger("django")
 
 # 取SVN用户表查询中文名对应的英文用户名
 # def checkauthor(name, author_ws):
@@ -175,15 +176,16 @@ def docheck(check_no, path):
 
             # 取svn服务器信息
             try:
-                server_info = svn.remote.RemoteClient(url).info()
+                server_info = svn.remote.RemoteClient(url, trust_cert=True).info()
                 if server_info.get('entry_kind') != 'file':  # 源码清单不应包含文件夹记录
                     check_detail.objects.create(check_no=check_no, excel_line=row, line_name=checking_name,
                                                 problem='09')
                     continue
 
-            except Exception:
+            except Exception as e:
                 check_detail.objects.create(check_no=check_no, excel_line=row, line_name=checking_name,
                                             problem='04')
+                logger.error(e)
                 continue
 
             # 检查

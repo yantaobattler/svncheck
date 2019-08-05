@@ -20,7 +20,7 @@ from app_svn import views as app_svn_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', app_user_views.login),
+    path('login/', app_user_views.login),
     path('svn/', app_user_views.index),
     path('mainblank/', app_user_views.mainblank),
     path('chg_pwd/', app_user_views.chg_pwd),
